@@ -7,6 +7,8 @@ import ModelSelector from './components/ModelSelector';
 import ComparisonGrid from './components/ComparisonGrid';
 import { Sparkles, Menu, Plus } from 'lucide-react';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
 export default function App() {
   const [threads, setThreads] = useState([]);
   const [activeThreadId, setActiveThreadId] = useState(null);
@@ -67,7 +69,7 @@ export default function App() {
 
   const fetchHealth = async () => {
     try {
-      const res = await fetch('/api/health');
+      const res = await fetch(`${API_BASE}/api/health`);
       if (res.ok) {
         const data = await res.json();
         setHealthInfo(data);
@@ -79,7 +81,7 @@ export default function App() {
 
   const fetchModels = async () => {
     try {
-      const res = await fetch('/api/models');
+      const res = await fetch(`${API_BASE}/api/models`);
       if (res.ok) {
         const data = await res.json();
         if (data.models && data.models.length > 0) {
@@ -93,7 +95,7 @@ export default function App() {
 
   const fetchThreads = async () => {
     try {
-      const res = await fetch('/api/chats');
+      const res = await fetch(`${API_BASE}/api/chats`);
       if (res.ok) {
         const data = await res.json();
         setThreads(data.threads || []);
@@ -106,9 +108,10 @@ export default function App() {
     }
   };
 
+
   const fetchThreadMessages = async (threadId) => {
     try {
-      const res = await fetch(`/api/chats/${threadId}`);
+      const res = await fetch(`${API_BASE}/api/chats/${threadId}`);
       if (res.ok) {
         const data = await res.json();
         if (data.thread) {
@@ -125,7 +128,7 @@ export default function App() {
 
   const handleNewChat = async () => {
     try {
-      const res = await fetch('/api/chats', {
+      const res = await fetch(`${API_BASE}/api/chats`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ persona: currentPersona })
@@ -145,7 +148,7 @@ export default function App() {
 
   const handleDeleteThread = async (threadId) => {
     try {
-      await fetch(`/api/chats/${threadId}`, { method: 'DELETE' });
+      await fetch(`${API_BASE}/api/chats/${threadId}`, { method: 'DELETE' });
       setThreads(prev => prev.filter(t => t.threadId !== threadId));
       if (activeThreadId === threadId) {
         const remaining = threads.filter(t => t.threadId !== threadId);
@@ -163,7 +166,7 @@ export default function App() {
 
   const handleRenameThread = async (threadId, newTitle) => {
     try {
-      const res = await fetch(`/api/chats/${threadId}`, {
+      const res = await fetch(`${API_BASE}/api/chats/${threadId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: newTitle })
@@ -196,7 +199,7 @@ export default function App() {
       setIsComparing(true);
       setComparisonResult({ prompt: userPrompt, results: [] });
       try {
-        const res = await fetch('/api/chat/compare', {
+        const res = await fetch(`${API_BASE}/api/chat/compare`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -230,7 +233,7 @@ export default function App() {
     setIsStreaming(true);
 
     try {
-      const response = await fetch('/api/chat/stream', {
+      const response = await fetch(`${API_BASE}/api/chat/stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -240,6 +243,7 @@ export default function App() {
           modelId: selectedModelId
         })
       });
+
 
       if (!response.ok) {
         throw new Error("API streaming error");

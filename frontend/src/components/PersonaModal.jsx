@@ -15,6 +15,8 @@ const PROVIDERS = [
   { key: 'groq', name: 'Groq AI', icon: Zap, color: '#f97316', envName: 'GROQ_API_KEY', placeholder: 'gsk_...' }
 ];
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
 export default function PersonaModal({ isOpen, onClose, currentPersona, onSelectPersona, healthInfo, onKeysUpdated }) {
   const [activeTab, setActiveTab] = useState('keys'); // 'keys' | 'persona'
   const [keys, setKeys] = useState({ gemini: '', openai: '', deepseek: '', groq: '' });
@@ -31,7 +33,7 @@ export default function PersonaModal({ isOpen, onClose, currentPersona, onSelect
 
   const fetchKeys = async () => {
     try {
-      const res = await fetch('/api/settings/keys');
+      const res = await fetch(`${API_BASE}/api/settings/keys`);
       if (res.ok) {
         const data = await res.json();
         if (data.keys) setKeys(data.keys);
@@ -46,11 +48,12 @@ export default function PersonaModal({ isOpen, onClose, currentPersona, onSelect
     setIsSaving(true);
     setSaveMessage(null);
     try {
-      const res = await fetch('/api/settings/keys', {
+      const res = await fetch(`${API_BASE}/api/settings/keys`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(keys)
       });
+
       const data = await res.json();
       if (res.ok) {
         setKeyStatus(data.keyStatus || {});
