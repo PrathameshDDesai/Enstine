@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import dns from "dns";
 
 let isMongoConnected = false;
 
@@ -43,7 +44,19 @@ export const connectDB = async () => {
     console.log("✅ Connected to MongoDB successfully.");
     return true;
   } catch (error) {
-    console.error("⚠️ MongoDB connection error:", error.message);
+    if (error.message && (error.message.includes("querySrv") || error.message.includes("ECONNREFUSED"))) {
+      try {
+        dns.setServers(["8.8.8.8", "1.1.1.1"]);
+        await mongoose.connect(mongoUri);
+        isMongoConnected = true;
+        console.log("✅ Connected to MongoDB successfully (via DNS fallback).");
+        return true;
+      } catch (retryError) {
+        console.error("⚠️ MongoDB connection error:", retryError.message);
+      }
+    } else {
+      console.error("⚠️ MongoDB connection error:", error.message);
+    }
     console.log("ℹ️ Falling back to in-memory thread storage.");
     isMongoConnected = false;
     return false;
@@ -51,3 +64,4 @@ export const connectDB = async () => {
 };
 
 export const getIsMongoConnected = () => isMongoConnected;
+

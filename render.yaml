@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: enstine-app
+    env: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: MongoDB
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: gemini_api_key
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
