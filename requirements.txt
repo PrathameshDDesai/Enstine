@@ -1,0 +1,4 @@
+# Enstine Multi-AI Agent Application
+# Note: This is a Node.js / Express + React full-stack application.
+# Dependencies are managed via package.json.
+# On Render.com, select Runtime: Node (Environment: Node.js).
