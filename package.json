@@ -1,0 +1,16 @@
+{
+  "name": "enstine-fullstack",
+  "version": "1.0.0",
+  "description": "Enstine Multi-AI Agent Application",
+  "main": "backend/server.js",
+  "type": "module",
+  "scripts": {
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd backend && node server.js",
+    "dev": "cd backend && npm run dev"
+  },
+  "keywords": ["ai", "react", "express", "gemini", "openai", "deepseek", "groq"],
+  "author": "Prathamesh Desai",
+  "license": "MIT"
+}
