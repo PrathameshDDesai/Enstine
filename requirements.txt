@@ -1,4 +1,18 @@
-# Enstine Multi-AI Agent Application
-# Note: This is a Node.js / Express + React full-stack application.
-# Dependencies are managed via package.json.
-# On Render.com, select Runtime: Node (Environment: Node.js).
+# Backend Dependencies
+express==5.2.1
+mongoose==8.9.5
+cors==2.8.6
+dotenv==17.4.2
+@google/genai==2.12.0
+nodemon==3.1.14
+
+# Frontend Dependencies
+react==19.2.7
+react-dom==19.2.7
+vite==8.1.1
+@vitejs/plugin-react==6.0.3
+lucide-react==1.25.0
+prismjs==1.30.0
+react-markdown==10.1.0
+remark-gfm==4.0.1
+oxlint==1.71.0
